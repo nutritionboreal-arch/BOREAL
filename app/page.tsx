@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -9,6 +9,18 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+
+    const update = () => setIsMobile(mq.matches);
+
+    update();
+    mq.addEventListener("change", update);
+
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); // empêche la navigation vers Formspree
@@ -57,17 +69,12 @@ export default function Home() {
           BOREAL.
         </div>
 
-        <nav
-          style={{
-            position: "absolute",
-            right: 0,
-            display: "flex",
-            gap: 14,
-          }}
-        >
-          <a href="#why">Why</a>
-          <a href="#waitlist">Waitlist</a>
-        </nav>
+        {!isMobile && (
+          <nav className="nav">
+            <a href="#why">Why</a>
+            <a href="#waitlist">Waitlist</a>
+          </nav>
+        )}
       </header>
 
       <section className="hero">

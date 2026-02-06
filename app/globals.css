@@ -195,14 +195,15 @@ a {
   color: rgba(169, 180, 194, 0.85);
 }
 
+.nav {
+  position: absolute;
+  right: 0;
+  display: flex;
+  gap: 14px;
+}
+
 @media (max-width: 640px) {
-  .h1 {
-    font-size: 34px;
-  }
-  .topbar {
-    padding-top: 14px;
-  }
   .nav {
     display: none;
-  } /* luxe + focus (optionnel) */
+  }
 }
