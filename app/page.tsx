@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 export default function Home() {
@@ -103,6 +104,11 @@ export default function Home() {
           action="https://formspree.io/f/xnjbaozz"
           method="POST"
           className="formRow"
+          onSubmit={() => {
+            setTimeout(() => {
+              window.location.href = "/thanks";
+            }, 500);
+          }}
         >
           <input
             className="input"
