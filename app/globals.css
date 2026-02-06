@@ -194,3 +194,15 @@ a {
   border-top: 1px solid var(--border);
   color: rgba(169, 180, 194, 0.85);
 }
+
+@media (max-width: 640px) {
+  .h1 {
+    font-size: 34px;
+  }
+  .topbar {
+    padding-top: 14px;
+  }
+  .nav {
+    display: none;
+  } /* luxe + focus (optionnel) */
+}
