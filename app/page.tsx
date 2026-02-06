@@ -1,7 +1,40 @@
 "use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault(); // empêche la navigation vers Formspree
+    setErr("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("https://formspree.io/f/xnjbaozz", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Formspree submit failed");
+
+      router.push("/thanks"); // redirection directe en prod
+    } catch (error) {
+      setErr("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main className="container">
       <header
@@ -13,7 +46,6 @@ export default function Home() {
           padding: "20px 0 12px",
         }}
       >
-        {/* Logo / Brand center */}
         <div
           style={{
             fontWeight: 950,
@@ -25,7 +57,6 @@ export default function Home() {
           BOREAL.
         </div>
 
-        {/* Nav right */}
         <nav
           style={{
             position: "absolute",
@@ -99,28 +130,26 @@ export default function Home() {
           Get updates + early access. (No spam.)
         </p>
 
-        {/* Remplace l'URL Formspree par la tienne */}
-        <form
-          action="https://formspree.io/f/xnjbaozz"
-          method="POST"
-          className="formRow"
-          onSubmit={() => {
-            setTimeout(() => {
-              window.location.href = "/thanks";
-            }, 500);
-          }}
-        >
+        <form className="formRow" onSubmit={handleSubmit}>
           <input
             className="input"
             type="email"
             name="email"
             required
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <button className="btn btnPrimary" type="submit">
-            Join
+          <button className="btn btnPrimary" type="submit" disabled={loading}>
+            {loading ? "Joining..." : "Join"}
           </button>
         </form>
+
+        {err && (
+          <div style={{ marginTop: 10, fontSize: 13, color: "var(--red)" }}>
+            {err}
+          </div>
+        )}
 
         <div className="small">
           By joining, you agree to receive emails from Boreal. Unsubscribe

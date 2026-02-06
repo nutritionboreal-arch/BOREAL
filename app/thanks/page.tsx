@@ -26,7 +26,7 @@ export default function Thanks() {
 
         <div style={{ marginTop: 16 }}>
           <a
-            href="https://instagram.com/TUCOMPTE"
+            href="https://www.instagram.com/borealnutritition/"
             style={{
               marginRight: 12,
               textDecoration: "none",
@@ -37,7 +37,7 @@ export default function Thanks() {
           </a>
 
           <a
-            href="https://tiktok.com/@TUCOMPTE"
+            href="https://www.tiktok.com/@boreal.on"
             style={{
               textDecoration: "none",
               fontWeight: 700,
