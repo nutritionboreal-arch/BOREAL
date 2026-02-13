@@ -9,8 +9,6 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const products = useMemo(
@@ -40,10 +38,7 @@ export default function Home() {
   );
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -76,57 +71,31 @@ export default function Home() {
     const el = document.getElementById(id);
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "start" });
-    setMobileMenuOpen(false);
   }
 
   return (
     <main className="container">
-      {/* Top header */}
-      <header
-        className={`premiumHeader ${scrolled ? "premiumHeaderScrolled" : ""}`}
-      >
+      {/* Premium header */}
+      <header className={`premiumHeader ${scrolled ? "isScrolled" : ""}`}>
+        {/* Center logo */}
         <div className="premiumLogo">BOREAL.</div>
 
-        {!isMobile && (
-          <nav className="premiumNav">
-            <a href="#why">Why</a>
-            <a href="#products">Products</a>
-            <a href="#waitlist">Waitlist</a>
-          </nav>
-        )}
-
-        {isMobile && (
-          <button
-            className="premiumMenuBtn"
-            type="button"
-            onClick={() => setMobileMenuOpen((v) => !v)}
-            aria-label="Open menu"
-          >
-            {mobileMenuOpen ? "✕" : "Menu"}
-          </button>
-        )}
-      </header>
-
-      {/* Mobile dropdown */}
-      {isMobile && mobileMenuOpen && (
-        <div className="premiumMobileMenu">
-          <button className="premiumMenuLink" onClick={() => scrollToId("why")}>
+        {/* Desktop nav (hidden on mobile) */}
+        <nav className="premiumNav">
+          <button type="button" onClick={() => scrollToId("why")}>
             Why
           </button>
-          <button
-            className="premiumMenuLink"
-            onClick={() => scrollToId("products")}
-          >
+          <button type="button" onClick={() => scrollToId("products")}>
             Products
           </button>
-          <button
-            className="premiumMenuLink"
-            onClick={() => scrollToId("waitlist")}
-          >
+          <button type="button" onClick={() => scrollToId("waitlist")}>
             Waitlist
           </button>
-        </div>
-      )}
+        </nav>
+
+        {/* little underline that appears when scrolled */}
+        <div className="premiumHeaderLine" aria-hidden="true" />
+      </header>
 
       {/* Hero */}
       <section className="hero premiumHero">
@@ -307,6 +276,127 @@ export default function Home() {
           </a>
         </div>
       </footer>
+
+      {/* Premium header CSS overrides */}
+      <style jsx>{`
+        .premiumHeader {
+          position: sticky;
+          top: 0;
+          z-index: 50;
+          height: 64px;
+          display: flex;
+          align-items: center;
+          padding: 0 14px;
+          background: rgba(0, 0, 0, 0);
+          backdrop-filter: blur(0px);
+          transition:
+            background 220ms ease,
+            backdrop-filter 220ms ease;
+        }
+
+        .premiumHeader.isScrolled {
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(10px);
+        }
+
+        /* Centered logo (always) */
+        .premiumLogo {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          font-weight: 900;
+          font-size: 24px; /* Impact fort */
+          letter-spacing: 0.24em; /* Respire. Luxe. */
+          line-height: 1;
+          color: #fff;
+          user-select: none;
+        }
+
+        .premiumHeader.isScrolled .premiumLogo {
+          transform: translateX(-50%);
+        }
+
+        .premiumHeader.isScrolled .premiumLogo {
+          opacity: 1;
+          transform: translateX(-50%) scale(0.94); /* petit effet premium au scroll */
+          letter-spacing: 0.22em;
+        }
+
+        /* Right-side nav (desktop only) */
+        .premiumNav {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          opacity: 0.85;
+          transition: opacity 180ms ease;
+        }
+
+        .premiumHeader.isScrolled .premiumNav {
+          opacity: 1;
+        }
+
+        .premiumNav button {
+          background: transparent;
+          border: none;
+          color: inherit;
+          font: inherit;
+          padding: 8px 6px;
+          cursor: pointer;
+          letter-spacing: 0.02em;
+          opacity: 0.85;
+          transition:
+            opacity 160ms ease,
+            transform 160ms ease;
+        }
+
+        .premiumNav button:hover {
+          opacity: 1;
+          transform: translateY(-1px);
+        }
+
+        /* Underline line */
+        .premiumHeaderLine {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 1px;
+          width: 100%;
+          opacity: 0;
+          background: rgba(255, 255, 255, 0.08);
+          transition: opacity 200ms ease;
+        }
+
+        .premiumHeader.isScrolled .premiumHeaderLine {
+          opacity: 1;
+        }
+
+        /* Hide nav on mobile */
+        @media (max-width: 768px) {
+          .premiumNav {
+            display: none;
+          }
+
+          .premiumHeader {
+            height: 64px;
+          }
+
+          .premiumLogo {
+            font-size: 22px;
+            letter-spacing: 0.26em;
+          }
+        }
+
+        /* Better look on very wide screens */
+        @media (min-width: 1100px) {
+          .premiumHeader {
+            padding: 0 18px;
+          }
+          .premiumNav {
+            gap: 22px;
+          }
+        }
+      `}</style>
     </main>
   );
 }
