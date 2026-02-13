@@ -11,6 +11,7 @@ export default function Home() {
   const [err, setErr] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const products = useMemo(
     () => [
@@ -39,12 +40,12 @@ export default function Home() {
   );
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const update = () => setIsMobile(mq.matches);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
 
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -81,38 +82,27 @@ export default function Home() {
   return (
     <main className="container">
       {/* Top header */}
-      <header className="topbar premiumHeader">
-        <div
-          style={{
-            fontWeight: 950,
-            letterSpacing: 3,
-            fontSize: 28,
-            color: "var(--silver)",
-          }}
-        >
-          BOREAL.
-        </div>
+      <header
+        className={`premiumHeader ${scrolled ? "premiumHeaderScrolled" : ""}`}
+      >
+        <div className="premiumLogo">BOREAL.</div>
 
-        {/* Desktop nav */}
         {!isMobile && (
-          <nav className="nav">
+          <nav className="premiumNav">
             <a href="#why">Why</a>
             <a href="#products">Products</a>
             <a href="#waitlist">Waitlist</a>
           </nav>
         )}
 
-        {/* Mobile menu button */}
         {isMobile && (
           <button
-            className="btn btnGhost premiumMenuBtn"
+            className="premiumMenuBtn"
             type="button"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Open menu"
-            aria-expanded={mobileMenuOpen}
           >
-            Menu
-            <span style={{ opacity: 0.75 }}>{mobileMenuOpen ? "✕" : "≡"}</span>
+            {mobileMenuOpen ? "✕" : "Menu"}
           </button>
         )}
       </header>
@@ -233,11 +223,18 @@ export default function Home() {
                 }}
               >
                 <div className="cardTitle">{p.name}</div>
-
                 <span className="premiumBadge">{p.badge}</span>
               </div>
 
               <div className="cardDesc">{p.desc}</div>
+
+              {p.name === "Whey Isolate" && (
+                <div style={{ marginTop: 14 }}>
+                  <a href="/whey-isolate-canada" className="premiumInlineLink">
+                    Learn more about whey isolate in Canada →
+                  </a>
+                </div>
+              )}
 
               <div style={{ marginTop: 12, fontSize: 12, opacity: 0.6 }}>
                 Specs may evolve before launch.

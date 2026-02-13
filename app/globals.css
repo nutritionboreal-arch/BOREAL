@@ -384,3 +384,129 @@ html {
   line-height: 1.6;
   font-size: 15px;
 }
+/* ============================= */
+/* ULTRA LUXE PERFORMANCE HEADER */
+/* ============================= */
+
+.premiumHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 28px 48px;
+
+  transition: all 0.35s ease;
+
+  background: transparent;
+  border-bottom: 1px solid transparent;
+
+  z-index: 100;
+}
+
+/* Quand on scroll */
+.premiumHeaderScrolled {
+  padding: 14px 48px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 15, 20, 0.85),
+    rgba(11, 15, 20, 0.65)
+  );
+
+  backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Logo */
+
+.premiumLogo {
+  font-weight: 950;
+  letter-spacing: 0.35em;
+  font-size: 20px;
+  color: var(--silver);
+
+  transition: all 0.35s ease;
+}
+
+.premiumHeaderScrolled .premiumLogo {
+  font-size: 18px;
+  letter-spacing: 0.3em;
+}
+
+/* Navigation */
+
+.premiumNav {
+  display: flex;
+  gap: 32px;
+}
+
+.premiumNav a {
+  text-decoration: none;
+  color: rgba(199, 205, 214, 0.7);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+
+  transition: all 0.25s ease;
+}
+
+.premiumNav a:hover {
+  color: white;
+  text-shadow: 0 0 16px rgba(124, 192, 75, 0.25);
+}
+
+/* Mobile button */
+
+.premiumMenuBtn {
+  background: none;
+  border: none;
+  color: var(--silver);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+/* Pour éviter que le contenu passe sous le header fixe */
+
+.hero {
+  padding-top: 120px;
+}
+
+/* ============================= */
+/* LUXE PRODUCT LINK            */
+/* ============================= */
+
+.premiumInlineLink {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--silver);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.premiumInlineLink:hover {
+  color: white;
+  text-shadow: 0 0 14px rgba(124, 192, 75, 0.35);
+}
+
+/* ============================= */
+/* PREMIUM PRODUCT CARDS        */
+/* ============================= */
+
+.premiumProductCard {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.premiumProductCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
