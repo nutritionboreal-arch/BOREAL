@@ -198,9 +198,27 @@ export default function Home() {
               <div className="cardDesc">{p.desc}</div>
 
               {p.name === "Whey Isolate" && (
-                <div style={{ marginTop: 14 }}>
+                <div
+                  style={{
+                    marginTop: 14,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 6,
+                  }}
+                >
                   <a href="/whey-isolate-canada" className="premiumInlineLink">
-                    Learn more about whey isolate in Canada →
+                    Whey Isolate Canada guide →
+                  </a>
+
+                  <a href="/clean-protein-canada" className="premiumInlineLink">
+                    Clean Protein Canada →
+                  </a>
+
+                  <a
+                    href="/low-lactose-whey-canada"
+                    className="premiumInlineLink"
+                  >
+                    Low Lactose Whey Canada →
                   </a>
                 </div>
               )}
@@ -386,7 +404,6 @@ export default function Home() {
             letter-spacing: 0.26em;
           }
         }
-
         /* Better look on very wide screens */
         @media (min-width: 1100px) {
           .premiumHeader {
