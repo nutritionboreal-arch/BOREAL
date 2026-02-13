@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -10,6 +10,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [scrolled, setScrolled] = useState(false);
+
+  // Popover state
+  const [guidesOpen, setGuidesOpen] = useState(false);
+  const guidesWrapRef = useRef<HTMLDivElement | null>(null);
 
   const products = useMemo(
     () => [
@@ -39,9 +43,32 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close popover on outside click + ESC
+  useEffect(() => {
+    function onDocMouseDown(e: MouseEvent) {
+      if (!guidesOpen) return;
+      const el = guidesWrapRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) {
+        setGuidesOpen(false);
+      }
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (!guidesOpen) return;
+      if (e.key === "Escape") setGuidesOpen(false);
+    }
+
+    document.addEventListener("mousedown", onDocMouseDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onDocMouseDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [guidesOpen]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,7 +87,7 @@ export default function Home() {
 
       if (!res.ok) throw new Error("Formspree submit failed");
       router.push("/thanks");
-    } catch (error) {
+    } catch {
       setErr("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -77,24 +104,28 @@ export default function Home() {
     <main className="container">
       {/* Premium header */}
       <header className={`premiumHeader ${scrolled ? "isScrolled" : ""}`}>
-        {/* Center logo */}
-        <div className="premiumLogo">BOREAL.</div>
+        <div className="premiumHeaderInner">
+          {/* Center logo */}
+          <div className="premiumLogo" role="img" aria-label="BOREAL">
+            BOREAL.
+          </div>
 
-        {/* Desktop nav (hidden on mobile) */}
-        <nav className="premiumNav">
-          <button type="button" onClick={() => scrollToId("why")}>
-            Why
-          </button>
-          <button type="button" onClick={() => scrollToId("products")}>
-            Products
-          </button>
-          <button type="button" onClick={() => scrollToId("waitlist")}>
-            Waitlist
-          </button>
-        </nav>
+          {/* Desktop nav (right) */}
+          <nav className="premiumNav">
+            <button type="button" onClick={() => scrollToId("why")}>
+              Why
+            </button>
+            <button type="button" onClick={() => scrollToId("products")}>
+              Products
+            </button>
+            <button type="button" onClick={() => scrollToId("waitlist")}>
+              Waitlist
+            </button>
+          </nav>
 
-        {/* little underline that appears when scrolled */}
-        <div className="premiumHeaderLine" aria-hidden="true" />
+          {/* Short underline */}
+          <div className="premiumHeaderLine" aria-hidden="true" />
+        </div>
       </header>
 
       {/* Hero */}
@@ -182,48 +213,73 @@ export default function Home() {
         <div className="grid">
           {products.map((p) => (
             <div key={p.name} className="card premiumCard premiumProductCard">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  gap: 12,
-                  marginBottom: 8,
-                }}
-              >
-                <div className="cardTitle">{p.name}</div>
+              {/* Title + badge directly under title */}
+              <div className="productTitleRow">
+                <div className="cardTitle" style={{ marginBottom: 0 }}>
+                  {p.name}
+                </div>
+              </div>
+
+              <div className="productBadgeUnderTitle">
                 <span className="premiumBadge">{p.badge}</span>
               </div>
 
-              <div className="cardDesc">{p.desc}</div>
+              <div className="cardDesc" style={{ marginTop: 10 }}>
+                {p.desc}
+              </div>
 
               {p.name === "Whey Isolate" && (
                 <div
-                  style={{
-                    marginTop: 14,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 6,
-                  }}
+                  className="premiumGuidesWrap premiumGuidesCentered"
+                  ref={guidesWrapRef}
                 >
-                  <a href="/whey-isolate-canada" className="premiumInlineLink">
-                    Whey Isolate Canada guide →
-                  </a>
-
-                  <a href="/clean-protein-canada" className="premiumInlineLink">
-                    Clean Protein Canada →
-                  </a>
-
-                  <a
-                    href="/low-lactose-whey-canada"
-                    className="premiumInlineLink"
+                  <button
+                    type="button"
+                    className="premiumGuidesPill"
+                    onClick={() => setGuidesOpen((v) => !v)}
+                    aria-haspopup="dialog"
+                    aria-expanded={guidesOpen}
                   >
-                    Low Lactose Whey Canada →
-                  </a>
+                    Protein guides <span className="premiumCaret">▾</span>
+                  </button>
+
+                  <div
+                    className={`premiumPopover ${guidesOpen ? "open" : ""}`}
+                    role="dialog"
+                    aria-label="Protein guides"
+                  >
+                    <a
+                      href="/best-whey-isolate-canada"
+                      className="premiumPopoverLink"
+                    >
+                      Best Whey Isolate in Canada (2026 Guide)
+                    </a>
+                    <a
+                      href="/whey-isolate-canada"
+                      className="premiumPopoverLink"
+                    >
+                      Whey Isolate Canada guide
+                    </a>
+                    <a
+                      href="/clean-protein-canada"
+                      className="premiumPopoverLink"
+                    >
+                      Clean Protein Canada
+                    </a>
+                    <a
+                      href="/low-lactose-whey-canada"
+                      className="premiumPopoverLink"
+                    >
+                      Low Lactose Whey Canada
+                    </a>
+
+                    <div className="premiumPopoverHint">Press ESC to close</div>
+                  </div>
                 </div>
               )}
 
-              <div style={{ marginTop: 12, fontSize: 12, opacity: 0.6 }}>
+              {/* Specs stays at the bottom (subtle) */}
+              <div className="productSpecsInline">
                 Specs may evolve before launch.
               </div>
             </div>
@@ -294,126 +350,6 @@ export default function Home() {
           </a>
         </div>
       </footer>
-
-      {/* Premium header CSS overrides */}
-      <style jsx>{`
-        .premiumHeader {
-          position: sticky;
-          top: 0;
-          z-index: 50;
-          height: 64px;
-          display: flex;
-          align-items: center;
-          padding: 0 14px;
-          background: rgba(0, 0, 0, 0);
-          backdrop-filter: blur(0px);
-          transition:
-            background 220ms ease,
-            backdrop-filter 220ms ease;
-        }
-
-        .premiumHeader.isScrolled {
-          background: rgba(0, 0, 0, 0.55);
-          backdrop-filter: blur(10px);
-        }
-
-        /* Centered logo (always) */
-        .premiumLogo {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          font-weight: 900;
-          font-size: 24px; /* Impact fort */
-          letter-spacing: 0.24em; /* Respire. Luxe. */
-          line-height: 1;
-          color: #fff;
-          user-select: none;
-        }
-
-        .premiumHeader.isScrolled .premiumLogo {
-          transform: translateX(-50%);
-        }
-
-        .premiumHeader.isScrolled .premiumLogo {
-          opacity: 1;
-          transform: translateX(-50%) scale(0.94); /* petit effet premium au scroll */
-          letter-spacing: 0.22em;
-        }
-
-        /* Right-side nav (desktop only) */
-        .premiumNav {
-          margin-left: auto;
-          display: flex;
-          align-items: center;
-          gap: 18px;
-          opacity: 0.85;
-          transition: opacity 180ms ease;
-        }
-
-        .premiumHeader.isScrolled .premiumNav {
-          opacity: 1;
-        }
-
-        .premiumNav button {
-          background: transparent;
-          border: none;
-          color: inherit;
-          font: inherit;
-          padding: 8px 6px;
-          cursor: pointer;
-          letter-spacing: 0.02em;
-          opacity: 0.85;
-          transition:
-            opacity 160ms ease,
-            transform 160ms ease;
-        }
-
-        .premiumNav button:hover {
-          opacity: 1;
-          transform: translateY(-1px);
-        }
-
-        /* Underline line */
-        .premiumHeaderLine {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          height: 1px;
-          width: 100%;
-          opacity: 0;
-          background: rgba(255, 255, 255, 0.08);
-          transition: opacity 200ms ease;
-        }
-
-        .premiumHeader.isScrolled .premiumHeaderLine {
-          opacity: 1;
-        }
-
-        /* Hide nav on mobile */
-        @media (max-width: 768px) {
-          .premiumNav {
-            display: none;
-          }
-
-          .premiumHeader {
-            height: 64px;
-          }
-
-          .premiumLogo {
-            font-size: 22px;
-            letter-spacing: 0.26em;
-          }
-        }
-        /* Better look on very wide screens */
-        @media (min-width: 1100px) {
-          .premiumHeader {
-            padding: 0 18px;
-          }
-          .premiumNav {
-            gap: 22px;
-          }
-        }
-      `}</style>
     </main>
   );
 }
