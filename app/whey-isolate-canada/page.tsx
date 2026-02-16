@@ -1,217 +1,213 @@
+// app/whey-isolate-canada/page.tsx
 import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Whey Isolate Canada — Clean Canadian Dairy Protein",
   description:
-    "Looking for whey isolate in Canada? BOREAL. is building clean, low-lactose protein made from Canadian dairy. No fillers. Transparent formulas. Join the waitlist.",
+    "Looking for the best whey isolate in Canada? Boreal builds clean, low-lactose protein made from Canadian dairy. No fillers. Transparent formulas.",
   alternates: {
     canonical: "/whey-isolate-canada",
   },
 };
 
+const FAQ = [
+  {
+    q: "What is whey isolate?",
+    a: "Whey isolate is a highly filtered whey protein that removes most lactose and fat. It typically provides a higher protein percentage per serving and is often easier to digest than whey concentrate.",
+  },
+  {
+    q: "Is whey isolate better than whey concentrate?",
+    a: "It depends on your goal. Whey isolate is usually lower in lactose and fat, which can help digestion and keep macros lean. Whey concentrate can be cheaper and still effective for most people.",
+  },
+  {
+    q: "Is whey isolate good for lactose intolerance?",
+    a: "Whey isolate is generally lower in lactose, so many people tolerate it better. If you’re highly sensitive, look for very low-lactose formulas and start with a small serving to assess tolerance.",
+  },
+  {
+    q: "How do I choose the best whey isolate in Canada?",
+    a: "Prioritize transparent labeling, minimal ingredients, third-party testing when available, and clear sourcing/manufacturing details. If digestion is a concern, favor low-lactose options and simple formulas.",
+  },
+];
+
 export default function WheyIsolateCanada() {
-  const jsonLd = {
+  const faqJsonLd = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        name: "BOREAL.",
-        url: "https://borealnutrition.com",
-        logo: "https://borealnutrition.com/og.jpg",
+    "@type": "FAQPage",
+    mainEntity: FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
       },
-      {
-        "@type": "WebSite",
-        name: "BOREAL.",
-        url: "https://borealnutrition.com",
-      },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is whey isolate lactose free?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Whey isolate typically contains significantly less lactose than whey concentrate. It may be easier to digest for many people, but it is not always completely lactose free.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What should I look for in whey isolate in Canada?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Look for transparent labels, minimal additives, clear sourcing (ideally Canadian dairy), and manufacturing/testing standards you can verify.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What does “clean protein” mean?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Clean protein generally means simple ingredients, no proprietary blends, and transparent labeling — with fewer unnecessary fillers and additives.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does whey isolate help with muscle recovery?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Protein is commonly used to support muscle repair and recovery after training. The best choice depends on your total diet, training, and tolerance to ingredients like lactose.",
-            },
-          },
-        ],
-      },
-    ],
+    })),
   };
 
   return (
     <main className="container legalPage">
-      <script
+      {/* FAQ Schema (for rich results) */}
+      <Script
+        id="faq-jsonld-whey-isolate-canada"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <h1 className="legalTitle">
         Whey Isolate Canada — Clean Canadian Dairy Protein
       </h1>
 
+      {/* Featured snippet target: short direct answer */}
       <p className="legalUpdated">
-        Clean, performance-focused protein — built with Canadian dairy values.
+        <strong>Whey isolate</strong> is a highly filtered whey protein that
+        removes most lactose and fat. In Canada, choosing a{" "}
+        <strong>clean, low-lactose whey isolate</strong> can improve digestion
+        and keep macros lean—especially if you want simple ingredients and
+        transparent labels.
       </p>
+
+      {/* Quick “snippet-friendly” bullets */}
+      <section className="legalSection">
+        <h2>Best Whey Isolate in Canada: Quick Checklist</h2>
+        <ul style={{ color: "var(--muted)", lineHeight: 1.7, fontSize: 15 }}>
+          <li>
+            <strong>Low lactose:</strong> easier digestion for many people.
+          </li>
+          <li>
+            <strong>Minimal ingredients:</strong> avoid unnecessary fillers.
+          </li>
+          <li>
+            <strong>Transparent label:</strong> clear protein per serving + full
+            ingredient list.
+          </li>
+          <li>
+            <strong>Trusted sourcing:</strong> Canadian dairy + clear production
+            info when possible.
+          </li>
+        </ul>
+      </section>
 
       <section className="legalSection">
         <h2>Why Whey Isolate in Canada Matters</h2>
         <p>
-          If you’re looking for <strong>whey isolate in Canada</strong>,
-          sourcing and formula quality matter. Canadian dairy is known for
-          strict standards and consistent quality, which helps create better
-          traceability from milk to finished protein.
+          When searching for whey isolate in Canada, quality and sourcing matter
+          a lot. Canadian dairy is known for strict standards, strong
+          traceability, and consistent production systems.
         </p>
         <p>
-          Choosing a Canada-first approach also supports local supply chains and
-          sets a higher bar for transparency — the exact foundation BOREAL. is
-          built on.
+          Choosing a Canadian whey isolate can support local dairy and make it
+          easier to understand what you’re putting in your body.
         </p>
       </section>
 
       <section className="legalSection">
         <h2>What Is Whey Isolate?</h2>
         <p>
-          Whey isolate is a filtered form of whey protein designed to reduce
-          lactose and fat while keeping a high protein concentration. The result
-          is often a “cleaner” protein powder that many people find easier on
-          digestion compared to regular whey concentrate.
-        </p>
-        <p>
-          If your goal is a lean, simple protein to support training, whey
-          isolate is a popular option — especially when you care about
-          ingredient quality and label clarity.
+          Whey isolate is a filtered form of whey protein that removes most of
+          the lactose and fat. The result is a cleaner protein source with high
+          protein concentration and improved digestibility.
         </p>
       </section>
 
       <section className="legalSection">
-        <h2>Clean Protein in Canada: No Fillers, No Hidden Blends</h2>
+        <h2>Whey Isolate vs Whey Concentrate</h2>
         <p>
-          “Clean protein” should mean simple. Many powders rely on long
-          ingredient lists, sweeteners, gums, and proprietary blends that make
-          it harder to know what you’re actually taking.
+          If your priority is digestion and lean macros, whey isolate is often
+          the better choice. If budget is your priority, concentrate can still
+          work well.
         </p>
-        <p>
-          BOREAL. is building a cleaner approach: transparent formulas, minimal
-          ingredients, and a premium standard you can trust.
-        </p>
-      </section>
 
-      <section className="legalSection">
-        <h2>Low-Lactose Focus & Easier Digestion</h2>
-        <p>
-          One reason people search for{" "}
-          <strong>low lactose whey in Canada</strong> is comfort. Whey isolate
-          typically contains less lactose than whey concentrate, which can
-          reduce digestive issues for many individuals.
-        </p>
-        <p>
-          Everyone’s tolerance is different, but a low-lactose focus is a smart
-          baseline when you want protein that fits daily training — without
-          feeling heavy.
-        </p>
-      </section>
-
-      <section className="legalSection">
-        <h2>“Home made” / Made in Canada: What to Look For</h2>
-        <p>
-          People often search terms like “home made” or “made in Canada” because
-          they want something more trustworthy than mass-produced, low-quality
-          blends. The best signal is clarity:
-        </p>
-        <p>
-          Look for clear sourcing (e.g., Canadian dairy), straightforward
-          ingredients, and quality processes you can verify. BOREAL. is building
-          exactly that — a Canada-first standard you’ll be proud to use.
-        </p>
-      </section>
-
-      <section className="legalSection">
-        <h2>Looking for the Best Whey Isolate in Canada?</h2>
-        <p>
-          The “best” whey isolate is the one that matches your goals and your
-          digestion: clean ingredients, transparent labeling, and reliable
-          standards. If you want a premium, clean direction — you’re in the
-          right place.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          <a
-            href="/#waitlist"
-            className="premiumInlineLink"
-            style={{ display: "inline-block" }}
+        {/* Simple table: good for snippet/table results */}
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            borderRadius: 14,
+            overflow: "hidden",
+            marginTop: 12,
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              background: "rgba(255,255,255,0.03)",
+              padding: 12,
+              fontWeight: 800,
+            }}
           >
-            Join the waitlist for early access →
-          </a>
+            <div>Whey Isolate</div>
+            <div>Whey Concentrate</div>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 0,
+            }}
+          >
+            <div style={{ padding: 12, color: "var(--muted)" }}>
+              Typically lower lactose and fat
+              <br />
+              Higher protein percentage
+              <br />
+              Often easier to digest
+            </div>
+            <div style={{ padding: 12, color: "var(--muted)" }}>
+              Usually cheaper
+              <br />
+              More lactose and fat
+              <br />
+              Still effective for muscle building
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="legalSection">
+        <h2>Clean Protein in Canada: No Fillers</h2>
+        <p>
+          Many protein powders include unnecessary additives or “fluff.” Clean
+          protein should mean transparent formulas, minimal ingredients, and
+          honest labeling.
         </p>
-        <p style={{ marginTop: 10, fontSize: 13, opacity: 0.7 }}>
-          Or go back to the homepage:{" "}
-          <a href="/" className="premiumInlineLink">
-            BOREAL. →
-          </a>
+        <p>
+          Boreal focuses on simple formulations—no bloating, no fluff, just
+          performance-driven protein.
         </p>
       </section>
 
       <section className="legalSection">
-        <h2>Frequently Asked Questions</h2>
-
-        <h3 style={{ marginTop: 14, marginBottom: 6 }}>
-          Is whey isolate lactose free?
-        </h3>
+        <h2>Low-Lactose & Easy Digestion</h2>
         <p>
-          Whey isolate generally contains much less lactose than whey
-          concentrate, and many people find it easier to digest. However, it’s
-          not always completely lactose free.
+          One advantage of whey isolate is reduced lactose. That can help many
+          people avoid discomfort compared to regular whey.
         </p>
+      </section>
 
-        <h3 style={{ marginTop: 14, marginBottom: 6 }}>
-          What should I look for in whey isolate in Canada?
-        </h3>
+      <section className="legalSection">
+        <h2>FAQ</h2>
+        {FAQ.map((item) => (
+          <div key={item.q} style={{ marginBottom: 14 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 900, marginBottom: 6 }}>
+              {item.q}
+            </h3>
+            <p style={{ margin: 0, color: "var(--muted)", lineHeight: 1.6 }}>
+              {item.a}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      <section className="legalSection">
+        <h2>Want a Clean Whey Isolate in Canada?</h2>
         <p>
-          Prioritize transparent labels, minimal additives, clear sourcing
-          (ideally Canadian dairy), and quality processes/testing you can
-          verify.
+          Boreal is launching clean Canadian whey isolate soon. Join the
+          waitlist to get early access and product updates.
         </p>
-
-        <h3 style={{ marginTop: 14, marginBottom: 6 }}>
-          What does “clean protein” mean?
-        </h3>
         <p>
-          Usually: fewer unnecessary fillers, no proprietary blends, and a label
-          that clearly explains what’s inside.
-        </p>
-
-        <h3 style={{ marginTop: 14, marginBottom: 6 }}>
-          Does whey isolate help with muscle recovery?
-        </h3>
-        <p>
-          Protein is commonly used to support muscle repair and recovery after
-          training. The best choice depends on your total diet, training, and
-          ingredient tolerance.
+          <a className="premiumInlineLink" href="/#waitlist">
+            Join the Boreal waitlist →
+          </a>
         </p>
       </section>
     </main>
